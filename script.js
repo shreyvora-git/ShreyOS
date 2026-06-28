@@ -423,7 +423,24 @@ function initSkillsInspector() {
       inspectorContent.classList.add('hidden');
 
       setTimeout(() => {
-        insBadge.textContent = details.badge;
+        const logoMap = {
+          html: 'html.png',
+          css: 'css-3.png',
+          js: 'java-script.png',
+          c: 'letter-c.png',
+          git: 'github-sign.png',
+          pr: 'logo-pr.png',
+          ae: 'logo-ae.png',
+          ps: 'logo-ps.png',
+          lr: 'logo-lr.png',
+          blender: 'logo-blender.png'
+        };
+        if (logoMap[skillKey]) {
+          insBadge.innerHTML = `<img src="logos/${logoMap[skillKey]}" alt="${details.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
+        } else {
+          insBadge.innerHTML = '';
+          insBadge.textContent = details.badge;
+        }
         insBadge.className = 'inspector-badge ' + details.badgeClass;
         insName.textContent = details.name;
         insType.textContent = details.type;
@@ -999,20 +1016,7 @@ function initNavigation() {
     });
 
     if (currentSectionId && currentSectionId !== lastActiveSectionId) {
-      const wipe = document.getElementById('vhs-glitch-wipe');
-      if (wipe && lastActiveSectionId !== '') {
-        wipe.classList.remove('active');
-        wipe.offsetHeight; // force reflow
-        wipe.classList.add('active');
-        
-        if (typeof playSynthSound === 'function') {
-          playSynthSound('glitch');
-        }
-        
-        setTimeout(() => {
-          wipe.classList.remove('active');
-        }, 500);
-      }
+
 
       lastActiveSectionId = currentSectionId;
 
@@ -1401,15 +1405,15 @@ function initCustomCursor() {
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
-    // Position dot instantly
-    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
   });
 
   const renderCursor = () => {
+    // Position dot inside frame tick
+    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+
     // Lerp ring coordinates for smooth trail
-    ringX += (mouseX - ringX) * 0.15;
-    ringY += (mouseY - ringY) * 0.15;
+    ringX += (mouseX - ringX) * 0.22;
+    ringY += (mouseY - ringY) * 0.22;
 
     // Calculate mouse speed to stretch ring elastically
     const dx = mouseX - lastMouseX;
@@ -1419,14 +1423,14 @@ function initCustomCursor() {
     lastMouseX = mouseX;
     lastMouseY = mouseY;
 
-    const stretch = Math.min(speed * 0.05, 0.4);
+    const stretch = Math.min(speed * 0.04, 0.35);
     const angle = Math.atan2(dy, dx);
 
     // Apply elastic scale and rotation when moving
     if (isHovering) {
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(1)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(1.1)`;
     } else {
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) rotate(${angle}rad) scale3d(${1 + stretch}, ${1 - stretch * 0.4}, 1)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) rotate(${angle}rad) scale3d(${1 + stretch}, ${1 - stretch * 0.35}, 1)`;
     }
 
     requestAnimationFrame(renderCursor);
