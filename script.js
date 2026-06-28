@@ -436,7 +436,7 @@ function initSkillsInspector() {
           blender: 'logo-blender.png'
         };
         if (logoMap[skillKey]) {
-          insBadge.innerHTML = `<img src="logos/${logoMap[skillKey]}" alt="${details.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
+          insBadge.innerHTML = `<img src="${logoMap[skillKey]}" alt="${details.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
         } else {
           insBadge.innerHTML = '';
           insBadge.textContent = details.badge;
